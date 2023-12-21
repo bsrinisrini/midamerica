@@ -31,7 +31,7 @@ if (is_dir($sourceDir)) {
         while (($file = readdir($dh)) !== false) {
             if (stripos($file, '.rpt') > 0) {
                 processRPT($sourceDir, $file);
-                //moveFiles($file, $sourceDir, $archiveDir);
+                moveFiles($file, $sourceDir, $archiveDir);
             }
         }
         closedir($dh);
@@ -50,6 +50,7 @@ function processRPT($sourceDir, $file){
 
 function processContent($lines) {
     $content = array_merge([], array_filter($lines));
+    //print_r($content);
     $response = [];
     $first = array_merge([], array_filter(explode(' ', $content[0])));
     if (stripos($first[1], '/') > 0) {
@@ -65,8 +66,8 @@ function processContent($lines) {
     $response['address'] = trim($content[4] ?? '');
 
     $response['result'][0] = $content[5] ? processResult($content[5]) : '';
-    $response['result'][1] = $content[6] ? processResult($content[6]) : '';
-    $response['result'][2] = $content[7] ? processResult($content[7]) : '';
+    $response['result'][1] = isset($content[6]) && $content[6] ? processResult($content[6]) : '';
+    $response['result'][2] = isset($content[7]) && $content[7] ? processResult($content[7]) : '';
     //print_r($response);
     return $response;
 }
@@ -77,6 +78,11 @@ function processResult($result) {
 
     if (count($content) == 1) {
         $result['level'] = $content[0];
+    } elseif(count($content) == 7) {
+        $result['id'] = trim($content[0] ?? '');
+        $result['level'] = trim($content[1] ?? '');
+        $result['location'] = trim($content[2].' '.$content[3].' '.$content[4]);
+        $result['duration'] = trim($content[5].' '.$content[6]);
     } elseif(count($content) == 6) {
         $result['id'] = trim($content[0] ?? '');
         $result['level'] = trim($content[1] ?? '');
@@ -93,7 +99,7 @@ function processResult($result) {
 
 function moveFiles($file, $sourceDir, $archiveDir) {
     $output = rename($sourceDir.'/'.$file, $archiveDir.'/'.$file);
-    echo 'Moved files::'.$output;
+    //echo 'Moved files::'.$output;
 }
 ?>
 </div>

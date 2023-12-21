@@ -75,17 +75,17 @@ function pdfGenerate($content, $file, $date) {
     $pdf->Ln(7);
 
     $pdf->SetFont('times','B',12);
-    $pdf->Cell(30);
+    $pdf->Cell(10);
     $pdf->Cell(30,10,'ID# ',0,0);
     $pdf->Cell(30,10,'RADON',0,0);
-    $pdf->Cell(30,10,'TEST',0,0);
+    $pdf->Cell(50,10,'TEST',0,0);
     $pdf->Cell(30,10,'TEST',0,0);
     $pdf->Cell(30,10,'DEVICE',0,0);
     $pdf->Ln(5);
     $pdf->Cell(30);
-    $pdf->Cell(30);
+    $pdf->Cell(10);
     $pdf->Cell(30,10,'LEVEL',0,0);
-    $pdf->Cell(30,10,'LOCATION',0,0);
+    $pdf->Cell(50,10,'LOCATION',0,0);
     $pdf->Cell(30,10,'LENGTH',0,0);
     $pdf->Cell(30,10,'USED',0,0);
     $pdf->Ln(7);
@@ -93,10 +93,10 @@ function pdfGenerate($content, $file, $date) {
     foreach($content['result'] as $radonResult) {
         //print_r(count($radonResult);
         $pdf->SetFont('courier','',12);
-        $pdf->Cell(30);
+        $pdf->Cell(10);
         $pdf->Cell(30,10,($radonResult['id'] ?? ''),0,0);
         $pdf->Cell(30,10,($radonResult['level'] ?? ''),0,0);
-        $pdf->Cell(30,10,($radonResult['location'] ?? ''),0,0);
+        $pdf->Cell(50,10,($radonResult['location'] ?? ''),0,0);
         $pdf->Cell(30,10,($radonResult['duration'] ?? ''),0,0);
         $pdf->Cell(30,10,(!empty($radonResult['id']) ? 'AC': ''),0,0);
         $pdf->Ln(7);
